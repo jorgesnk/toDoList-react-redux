@@ -1,0 +1,23 @@
+.card{
+    box-shadow: 0.5px 0.5px 5px 1px #d6d6d6;
+    border-radius: 3px;
+}
+
+.trash{
+    cursor: pointer;
+}
+.trash:active{
+    transform: translateY(1px);
+}
+.Edit{
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.Edit:active{
+    transform: translateY(1px);
+}
+
+.h2{
+    font-size: 30px;
+}

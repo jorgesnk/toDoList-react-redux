@@ -1,7 +1,11 @@
-import { CLICK_UPDATE_VALUE } from './actionTypes';
+import { USER,LIST } from './actionTypes';
 
-export const clickButton = value => ({
-  type: CLICK_UPDATE_VALUE,
-  user: value
+export const LoginData = value => ({
+  type: USER,
+  user: value,
 });
 
+export const ListData = value => ({
+  type: LIST,
+  list: value,
+});

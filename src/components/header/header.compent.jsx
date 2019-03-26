@@ -1,53 +1,99 @@
 import React from "react"
 import "./header.css"
 import { connect } from 'react-redux';
-import { clickButton } from "../../actions/index";
-import { bindActionCreators } from 'redux';
+import { LoginData } from "../../actions/index"
+import { bindActionCreators } from "redux";
+import { Box, Text, ResponsiveContext, Button } from 'grommet';
+import { Menu, Logout } from "grommet-icons"
 
 class HeaderTeste extends React.Component {
 
-
+    show = true
     constructor(props) {
         super(props)
-        this.goToLogin = this.goToLogin.bind(this);
-        this.userDiv = this.userDiv.bind(this);
-        const { user } = this.props;
-        console.log(user);
-
+        this.isLogin = this.isLogin.bind(this);
+        this.logout = this.logout.bind(this);
+        this.setShow = this.setShow.bind(this);
+        this.responseShow = this.responseShow.bind(this);
     }
 
 
-    userDiv() {
-        const { user } = this.props;
 
-        if (user) {
-            return <h2>{user}</h2>
-        }
-        else {
+    renderSize(size) {
 
-            return <div><button className="button button-outline" onClick={this.goToLogin}>Login</button></div>
+        console.log(size);
+        switch (size) {
+
+            case "xxsmall": return "xlarge"
+            case "xsmall": return "xlarge"
+            case "small": return "large"
+            default: return "medium"
         }
+
     }
 
-    goToLogin() {
-        this.props.clickButton("teste");
+    isLogin() {
+        if (this.props.user.token) {
+            return true
+        }
+        return false
+
+    }
+
+    logout() {
+        this.props.LoginData({ user: "", token: "" })
+        window.localStorage.removeItem("user")
+    }
+
+    setShow(state) {
+        this.show = state;
+        return this.responseShow
+    }
+
+    responseShow() {
+        return this.show;
     }
 
     render() {
         return (
-            <div className="headerLayout"> <h1> Todo List </h1>
-                {this.userDiv()}
-            </div>
+            <ResponsiveContext.Consumer>
+                {(size) => (
+                    <Box
+                        tag='header'
+                        direction='row'
+                        align='center'
+                        justify="start"
+                        background='brand'
+                        pad={{ left: 'medium', right: 'medium', vertical: this.renderSize(size) }}
+                        elevation='medium'
+                        style={{ zIndex: '1' }}
+                    >
+                        {this.isLogin() ? <Button  focusIndicator={true} plain={true} icon={<Menu></Menu>} ></Button> : null}
+                        <Text size="xlarge" > ToDoList </Text>
+
+                        <Box justify="end" direction="row" width="100%" >
+                            {this.isLogin() ? <Button onClick={this.logout} plain={false} plain={true} color="light-1" reverse={true} label="logout" icon={<Logout size="medium" ></Logout>} ></Button> : null}
+                        </Box>
+                    </Box>
+
+                )}
+            </ResponsiveContext.Consumer>
+
         )
     }
 }
 
+
+
+
+
+
 const mapStateToProps = store => ({
-    user: store.clickState.user
+    user: store.LoginStates.user,
 });
 
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ clickButton }, dispatch);
+    bindActionCreators({ LoginData }, dispatch);
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderTeste);
