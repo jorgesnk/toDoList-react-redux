@@ -1,7 +1,7 @@
 import React from "react"
 import "./header.css"
 import { connect } from 'react-redux';
-import { LoginData } from "../../actions/index"
+import { LoginData,LogOut } from "../../actions/index"
 import { bindActionCreators } from "redux";
 import { Box, Text, ResponsiveContext, Button } from 'grommet';
 import { Menu, Logout } from "grommet-icons"
@@ -42,6 +42,7 @@ class HeaderTeste extends React.Component {
 
     logout() {
         this.props.LoginData({ user: "", token: "" })
+        this.props.LogOut()
         window.localStorage.removeItem("user")
     }
 
@@ -68,11 +69,11 @@ class HeaderTeste extends React.Component {
                         elevation='medium'
                         style={{ zIndex: '1' }}
                     >
-                        {this.isLogin() ? <Button  focusIndicator={true} plain={true} icon={<Menu></Menu>} ></Button> : null}
+                        {this.isLogin() ? <Button className='btnIcon' focusIndicator={true} plain={true} icon={<Menu></Menu>} ></Button> : null}
                         <Text size="xlarge" > ToDoList </Text>
 
                         <Box justify="end" direction="row" width="100%" >
-                            {this.isLogin() ? <Button onClick={this.logout} plain={false} plain={true} color="light-1" reverse={true} label="logout" icon={<Logout size="medium" ></Logout>} ></Button> : null}
+                            {this.isLogin() ? <Button onClick={this.logout} plain={true} color="light-1" className="btnIcon" reverse={true} label="logout" icon={<Logout size="medium" ></Logout>} ></Button> : null}
                         </Box>
                     </Box>
 
@@ -93,7 +94,7 @@ const mapStateToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ LoginData }, dispatch);
+    bindActionCreators({ LoginData,LogOut }, dispatch);
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderTeste);

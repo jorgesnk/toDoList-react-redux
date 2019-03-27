@@ -1,4 +1,4 @@
-import { USER } from '../actions/actionTypes';
+import { USER, LOGOUT } from '../actions/actionTypes';
 const initialState = {
   user: {
     name: "",
@@ -12,6 +12,9 @@ export const LoginReduces = (state = initialState, action) => {
         ...state,
         user: action.user
       };
+
+    case LOGOUT:
+      return initialState
     default:
       return state;
   }

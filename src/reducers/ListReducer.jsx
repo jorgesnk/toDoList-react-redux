@@ -1,8 +1,8 @@
-import { LIST } from '../actions/actionTypes';
+import { LIST, LOGOUT } from '../actions/actionTypes';
 
 const initialState = {
     list: [
-      
+
     ],
 
 };
@@ -13,6 +13,7 @@ export const ListReducer = (state = initialState, action) => {
                 ...state,
                 list: action.list
             };
+        case LOGOUT: return initialState
         default:
             return state;
     }

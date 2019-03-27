@@ -1,7 +1,7 @@
     
 
 
-.btnLogOut{
-    
+.btnIcon:active{
+    transform: translateY(1px);
     
 }

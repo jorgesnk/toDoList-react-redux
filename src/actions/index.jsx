@@ -1,4 +1,4 @@
-import { USER,LIST } from './actionTypes';
+import { USER, LIST, LOGOUT } from './actionTypes';
 
 export const LoginData = value => ({
   type: USER,
@@ -7,5 +7,10 @@ export const LoginData = value => ({
 
 export const ListData = value => ({
   type: LIST,
+  list: value,
+});
+
+export const LogOut = value => ({
+  type: LOGOUT,
   list: value,
 });
