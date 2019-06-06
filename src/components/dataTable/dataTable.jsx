@@ -6,14 +6,17 @@ import { Box, Paragraph, Text, } from "grommet"
 import { Trash, Edit, } from "grommet-icons"
 import LayerDelete from "../layerDelete/layerDelete"
 import LayerUpdate from "../layerUpdate/layerUpdate"
+import LayerCreate from "../layerCreate/layerCreate"
 import "./dataTablel.css"
 class DataTablel extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            open: undefined, index: null,
+            open: undefined,
+            index: null,
             onEdit: undefined,
+            onCreate: undefined,
             edit: {
                 title: ""
             }
@@ -22,6 +25,8 @@ class DataTablel extends React.Component {
         this.onClose = this.onClose.bind(this);
         this.onEditOpen = this.onEditOpen.bind(this);
         this.onEditClose = this.onEditClose.bind(this);
+        this.onCreateOpen = this.onCreateOpen.bind(this);
+        this.onCreateClose = this.onCreateClose.bind(this)
     }
 
 
@@ -31,6 +36,14 @@ class DataTablel extends React.Component {
 
     onEditClose() {
         this.setState({ onEdit: undefined })
+    }
+
+    onCreateOpen() {
+        this.setState({ onCreate: true, });
+    }
+
+    onCreateClose() {
+        this.setState({ onCreate: undefined })
     }
 
     onOpen(index) {
@@ -63,8 +76,12 @@ class DataTablel extends React.Component {
                             </Box>
 
                         </Box>
-                        <Box align="start" pad={{ horizontal: "small", vertical: 'small' }} margin={{ right: "10px" }} ><Paragraph>{value.description}</Paragraph></Box>
-                        <Box align="start" pad={{ left: "xxsmall", top: 'large' }} ><Text color="dark-3"> {value.date} </Text></Box>
+                        <Box align="start" pad={{ horizontal: "small", vertical: 'small' }} margin={{ right: "10px" }} >
+                            <Paragraph>{value.description}</Paragraph>
+                        </Box>
+                        <Box align="start" pad={{ left: "xxsmall", top: 'large' }} >
+                            <Text color="dark-3"> {value.date} </Text>
+                        </Box>
 
                     </Box>
                 })}
@@ -72,7 +89,10 @@ class DataTablel extends React.Component {
                     <LayerDelete index={this.state.index} onClose={this.onClose}  ></LayerDelete>
                 )}
                 {this.state.onEdit && (
-                    <LayerUpdate index={this.state.index} onEditOpen={this.onEditClose} onEditClose={this.onEditClose}  ></LayerUpdate>
+                    <LayerUpdate index={this.state.index} onClose={this.onEditClose}  ></LayerUpdate>
+                )}
+                {this.state.onCreate && (
+                    <LayerCreate onOpen={this.onEditClose} onClose={this.onCreateClose}  ></LayerCreate>
                 )}
             </div>
         );

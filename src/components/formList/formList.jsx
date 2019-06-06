@@ -9,13 +9,19 @@ class FormList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            title: this.props.edit.title,
-            date: this.props.edit.date,
-            description: this.props.edit.description,
+        if (this.props.isCreate) {
+            this.state = {...this.props}
+        } else {
+            this.state = {...this.props.edit}
         }
+        // console.log(this.props);
+
+
         this.hadlerChange = this.hadlerChange.bind(this);
         this.update = this.update.bind(this);
+        this.create = this.create.bind(this);
+        this.submitData = this.submitData.bind(this);
+        this.textButonSubimmt = this.textButonSubimmt.bind(this);
     }
 
     hadlerChange(evt) {
@@ -23,19 +29,39 @@ class FormList extends React.Component {
     }
 
 
+    submitData() {
+        if (this.props.isCreate) {
+            this.create();
+            return
+        }
+        this.update()
+    }
+
     update() {
         this.props.list[this.props.index] = {
             title: this.state.title,
             date: this.state.date,
             description: this.state.description,
         }
-        this.props.onEditClose();
+        this.props.onClose();
+    }
+
+    create() {
+        let newList = Object.assign([], this.props.list);
+        newList.push({
+            title: this.state.title,
+            description: this.state.description,
+            date: this.state.date
+        })
+        this.props.ListData(newList);
+        this.props.onClose();
+
     }
 
     render() {
         return (
             <Box margin={{ horizontal: "medium", vertical: "small" }}>
-                <Form onSubmit={this.update} >
+                <Form onSubmit={this.submitData} >
                     <FormField name="title" label="Name" onChange={this.hadlerChange} value={this.state.title} />
                     <FormField name="date" label="Name" onChange={this.hadlerChange} value={this.state.date} />
                     <TextArea
@@ -45,12 +71,23 @@ class FormList extends React.Component {
                         resize={false}
                         name="description"
                     />
-                    <Button type="submit" primary margin={{top:"15px"}} label="Editar" />
+                    <Box align="center" direction="row" justify="around" >
+                        <Button type="submit" primary margin={{ top: "15px" }} label={this.textButonSubimmt()} />
+                        <Button onClick={() => this.props.onClose()} primary margin={{ top: "15px" }} color="dark-3" label="Cancelar" />
+                    </Box>
+
                 </Form  >
             </Box>
 
         )
 
+    }
+
+    textButonSubimmt() {
+        if (this.props.isCreate) {
+            return "Adicionar"
+        }
+        return "Editar"
     }
 
 

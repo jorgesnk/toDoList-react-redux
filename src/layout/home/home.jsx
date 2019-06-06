@@ -4,41 +4,41 @@ import DataTable from "../../components/dataTable/dataTable"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import { ListData } from "../../actions/index"
-import { Heading } from "grommet"
+import { Heading, Button, Box, Stack } from "grommet"
+import { Add, } from "grommet-icons"
+import LayerCreate from "../../components/layerCreate/layerCreate"
 class HomeLayout extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: '' };
-        this.handleChange = this.handleChange.bind(this);
-        this.addData = this.addData.bind(this);
+        this.state = { layerCreate: undefined };
+        this.openCreate = this.openCreate.bind(this)
+        this.closeCreate = this.closeCreate.bind(this)
     }
 
-
-
-
-
-    handleChange(event) {
-        this.setState({ value: event.target.value });
+    openCreate() {
+        this.setState({ layerCreate: true })
     }
 
-    addData() {
-        let toAdd = Object.assign([], this.props.list);
-        toAdd.push({
-            title: 'teste' + Number((Math.random() * 2)).toFixed(1),
-            description:"teste description",
-            date:"25/12/1995",
-        })
-        this.props.ListData([])
-        this.props.ListData(toAdd);
+    closeCreate() {
+        this.setState({ layerCreate: undefined });
     }
-
 
     render() {
         return (
             <div>
                 <Heading textAlign="start" color="neutral-3" margin={{ vertical: "medium", horizontal: "medium" }} > Tarefas</Heading>
+
                 <DataTable></DataTable>
-                <button onClick={this.addData} >Add</button>
+
+                <Box align="end" pad="large"  >
+                    <Box round="full" justify="end" overflow="hidden" background="neutral-3">
+                        <Button icon={<Add />} hoverIndicator onClick={this.openCreate} />
+                    </Box>
+                </Box>
+
+                {this.state.layerCreate && (
+                    <LayerCreate isCreate={true} onClose={this.closeCreate} ></LayerCreate>
+                )}
             </div>
         )
     }
